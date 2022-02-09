@@ -131,7 +131,6 @@ def streamlit_stuff():
 
   k = int(df['n_neighbours'].values[0])
   nn = give_nearest_n(proj_3d, slected_pesticide_idx)
-  st.write(nn)
   
   # Filter out all neighbours which have no known kill risk entry.
   knn_list = []
@@ -141,10 +140,12 @@ def streamlit_stuff():
           knn_list.append(n)
   
   # Get the K-Nearest-Neighbours
-  nn = knn_list[0:k]    
+  nn = knn_list[0:k]
   
   # Get K-Nearest-Neighbours out of Dataframe and print them
   df_nn = bees.iloc[nn]
+  column_titles = ['name', 'honeybees_contact_kill_risk', 'honeybees_contact_kill_value_clean', 'url', 'inchi']
+  df_nn = df_nn.reindex(columns=column_titles)
   st.write(df_nn)
   
   # Draw the molecular shapes of the KNNs
