@@ -1,1 +1,1 @@
-# bee_friendly
+# bee-friendly
