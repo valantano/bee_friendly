@@ -27,7 +27,7 @@ def user_input_features(bees):
     features = pd.DataFrame(data, index=[0])
     return features
 
-def give_nearest_n(proj_3d, point, k):
+def give_nearest_n(proj_3d, point):
     n = proj_3d.shape[0]
     data = proj_3d.copy()
 
@@ -43,7 +43,7 @@ def give_nearest_n(proj_3d, point, k):
     for id, row in enumerate(dist_matrix):
         nearest_n[id] = np.argsort(row)
     nearest_n = nearest_n[:,1:]
-    return nearest_n[point, 0:k]
+    return nearest_n[point,:]
 
 def show_atom_number(mol, label):
     for atom in mol.GetAtoms():
@@ -88,7 +88,7 @@ def plot_3d(proj_3d, bees, slected_pesticide_idx):
 def streamlit_stuff():
 
   st.write("""
-  # Bee-Friendly Pesticide Classifier
+  # Bee-Friendly Pesticide "Classifier"
 
   This app lets you choose one pesticide from a collection of pesticides and predicts the risk of death for a bee if she encounters that specific pesticide.
   We infer the risk by looking at the risk-rating of similar pesticides (from a chemical molecule structure perspective).
@@ -130,12 +130,23 @@ def streamlit_stuff():
   st.subheader('Nearest Neighbours')
 
   k = int(df['n_neighbours'].values[0])
-  nn = give_nearest_n(proj_3d, slected_pesticide_idx, k)
+  nn = give_nearest_n(proj_3d, slected_pesticide_idx)
   st.write(nn)
-
+  
+  # Filter out all neighbours which have no known kill risk entry.
+  knn_list = []
+  for n in nn:
+      if df_nn.loc[n, 'honeybees_contact_kill_risk'] != 'unknown':
+          knn_list.append(n)
+  
+  # Get the K-Nearest-Neighbours
+  nn = knn_list[0:k]    
+  
+  # Get K-Nearest-Neighbours out of Dataframe and print them
   df_nn = bees.iloc[nn]
   st.write(df_nn)
-
+  
+  # Draw the molecular shapes of the KNNs
   for n in nn:
       # st.write(df_nn.loc[n])
       st.subheader('Neighbour ' + df_nn.loc[n, 'name'] + ': ' + str(df_nn.loc[n, 'honeybees_contact_kill_risk']))
