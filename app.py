@@ -43,7 +43,7 @@ def give_nearest_n(proj_3d, point):
     for id, row in enumerate(dist_matrix):
         nearest_n[id] = np.argsort(row)
     nearest_n = nearest_n[:,1:]
-    return nearest_n[point,:]
+    return nearest_n[point,:], dist_matrix[point,:]
 
 def show_atom_number(mol, label):
     for atom in mol.GetAtoms():
@@ -130,7 +130,8 @@ def streamlit_stuff():
   st.subheader('Nearest Neighbours')
 
   k = int(df['n_neighbours'].values[0])
-  nn = give_nearest_n(proj_3d, slected_pesticide_idx)
+  nn,dist = give_nearest_n(proj_3d, slected_pesticide_idx)
+  st.write(dist)
   
   # Filter out all neighbours which have no known kill risk entry.
   knn_list = []
