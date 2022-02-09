@@ -135,6 +135,7 @@ def streamlit_stuff():
   
   # Filter out all neighbours which have no known kill risk entry.
   knn_list = []
+  df_nn = bees.iloc[nn]
   for n in nn:
       if df_nn.loc[n, 'honeybees_contact_kill_risk'] != 'unknown':
           knn_list.append(n)
