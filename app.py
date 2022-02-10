@@ -3,6 +3,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import plotly.express as px
+import math
 
 from rdkit import Chem
 from rdkit.Chem import Draw
@@ -43,7 +44,17 @@ def give_nearest_n(proj_3d, point):
     for id, row in enumerate(dist_matrix):
         nearest_n[id] = np.argsort(row)
     nearest_n = nearest_n[:,1:]
-    return nearest_n[point,:], dist_matrix[point,:]
+    return nearest_n[point,:], dist_matrix[point,1:]
+
+def classify_pesticide(contact_kill_risk_of_knn, distances):
+    risk_dict = {'low': 1, 'medium': 2, 'high': 3}
+    weights = (-distances+distances.sum())
+    weights = weights/weights.sum()
+    mean = 0
+    for id, risk in enumerate(contact_kill_risk_of_knn):
+        mean += risk_dict[risk] * weights[id]
+    mean = math.ceil(mean)
+    return [risk for risk, val in risk_dict.items() if val==mean][0]
 
 def show_atom_number(mol, label):
     for atom in mol.GetAtoms():
@@ -115,17 +126,6 @@ def streamlit_stuff():
   st.header("3D UMAP")
   st.plotly_chart(plot_3d(proj_3d, bees, slected_pesticide_idx))
 
-
-  slected_pesticide_row = bees.iloc[slected_pesticide_idx, :]
-  st.header("Info about " + slected_pesticide_row['name'])
-  st.write(f"This one is currently classified as {str(slected_pesticide_row['honeybees_contact_kill_risk'])}.")
-
-  m = inchi.MolFromInchi(slected_pesticide_row['inchi'])
-  fig = Draw.MolToMPL(m)
-  st.pyplot(fig)
-
-
-
   # K-NN
   st.subheader('Nearest Neighbours')
 
@@ -135,16 +135,32 @@ def streamlit_stuff():
   
   # Filter out all neighbours which have no known kill risk entry.
   knn_list = []
+  dist_list = []
   df_nn = bees.iloc[nn]
-  for n in nn:
+  for id, n in enumerate(nn):
       if df_nn.loc[n, 'honeybees_contact_kill_risk'] != 'unknown':
           knn_list.append(n)
+          dist_list.append(dist[id])
   
   # Get the K-Nearest-Neighbours
   nn = knn_list[0:k]
+  dist = dist_list[0:k]
+  
+  df_nn = bees.iloc[nn]
+  kill_risks = df_nn['honeybees_contact_kill_risk'].values
+  st.write(kill_risks)
+  classification_kill_risk = classify_pesticide(kill_risks, dist)
+  
+  slected_pesticide_row = bees.iloc[slected_pesticide_idx, :]
+  st.header("Info about " + slected_pesticide_row['name'])
+  st.write(f"This ones kill risk is currently {str(slected_pesticide_row['honeybees_contact_kill_risk'])}.")
+  st.write(f"The Model predicts that its kill risk is: {str(slected_pesticide_row['honeybees_contact_kill_risk'])}.")
+
+  m = inchi.MolFromInchi(slected_pesticide_row['inchi'])
+  fig = Draw.MolToMPL(m)
+  st.pyplot(fig)
   
   # Get K-Nearest-Neighbours out of Dataframe and print them
-  df_nn = bees.iloc[nn]
   column_titles = ['name', 'honeybees_contact_kill_risk', 'honeybees_contact_kill_value_clean', 'url', 'inchi']
   df_nn = df_nn.reindex(columns=column_titles)
   st.write(df_nn)
