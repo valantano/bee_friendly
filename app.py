@@ -156,8 +156,8 @@ def streamlit_stuff():
   st.write(f"The Model predicts that its kill risk is: {classification_kill_risk}.")
 
   m = inchi.MolFromInchi(slected_pesticide_row['inchi'])
-  fig = Draw.MolToMPL(m)
-  st.pyplot(fig, height=400)
+  fig = Draw.MolToMPL(m, useFraction=0.5)
+  st.pyplot(fig)
   
   # Get K-Nearest-Neighbours out of Dataframe and print them
   column_titles = ['name', 'honeybees_contact_kill_risk', 'honeybees_contact_kill_value_clean', 'url', 'inchi']
@@ -170,7 +170,7 @@ def streamlit_stuff():
       st.subheader('Neighbour ' + df_nn.loc[n, 'name'] + ': ' + str(df_nn.loc[n, 'honeybees_contact_kill_risk']))
       nn_mol = inchi.MolFromInchi(df_nn.loc[n, 'inchi'])
       fig = Draw.MolToMPL(nn_mol)
-      st.pyplot(fig, width=200)
+      st.pyplot(fig)
 
 
 
