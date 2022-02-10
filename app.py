@@ -157,7 +157,7 @@ def streamlit_stuff():
   st.write(f"The Model predicts that its kill risk is: {classification_kill_risk}.")
 
   m = inchi.MolFromInchi(slected_pesticide_row['inchi'])
-  fig = Draw.MolToMPL(m)
+  fig = Draw.MolToMPL(m, size(100,100))
   st.pyplot(fig, use_container_width=True)
   
   # Get K-Nearest-Neighbours out of Dataframe and print them
