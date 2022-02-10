@@ -115,8 +115,8 @@ def streamlit_stuff():
   bees['honeybees_contact_kill_risk'] = bees['honeybees_contact_kill_risk'].cat.add_categories('unknown').fillna("unknown")
   df = user_input_features(bees)
 
-  st.subheader('User Input Parameters')
-  st.write(df)
+#   st.subheader('User Input Parameters')
+#   st.write(df)
 
   slected_pesticide = df['pesticide_selection'].values[0]
   slected_pesticide_idx = int(slected_pesticide.split("-")[0][:-1])
@@ -128,6 +128,10 @@ def streamlit_stuff():
 
   proj_3d = np.load("2317_proj_3d.npy")
   st.header("3D UMAP")
+  st.write("""
+  The chosen pesticide will be marked blue inside the graph so you can find it.\n
+  You can also hover over the Data Points in order to find out the molecule id (hover_data_0) which can be typed in on the left side.
+  """)
   st.plotly_chart(plot_3d(proj_3d, bees, slected_pesticide_idx))
 
   # K-NN
@@ -155,7 +159,7 @@ def streamlit_stuff():
   
   slected_pesticide_row = bees.iloc[slected_pesticide_idx, :]
   st.subheader("Info about the chosen pesticide" + slected_pesticide_row['name'])
-  st.write(f"This ones kill risk is currently {str(slected_pesticide_row['honeybees_contact_kill_risk'])} -> The Model predicts that its kill risk is: `{classification_kill_risk}`.")
+  st.write(f"This ones kill risk is currently `{slected_pesticide_row['honeybees_contact_kill_risk']}` -> The Model predicts that its kill risk is: `{classification_kill_risk}`.")
   st.write("Here you can see the structure of the molecule:")
 
   m = inchi.MolFromInchi(slected_pesticide_row['inchi'])
