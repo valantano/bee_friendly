@@ -136,6 +136,16 @@ def streamlit_stuff():
 
   # K-NN
   st.header('Nearest Neighbours')
+  st.write('k=1: classifies 0.6197% of the test_set correctly. (crit_fail:9, near_wrong:231)')
+  st.write('k=2: classifies 0.6878% of the test_set correctly. (crit_fail:8, near_wrong:189)')
+  st.write('k=3: classifies 0.6545% of the test_set correctly. (crit_fail:14, near_wrong:204)')
+  st.write('k=4: classifies 0.6434% of the test_set correctly. (crit_fail:19, near_wrong:206)')
+  st.write('k=5: classifies 0.6308% of the test_set correctly. (crit_fail:18, near_wrong:215)')
+  st.write('k=6: classifies 0.6323% of the test_set correctly. (crit_fail:23, near_wrong:209)')
+  st.write('k=7: classifies 0.6244% of the test_set correctly. (crit_fail:22, near_wrong:215)')
+  st.write('k=8: classifies 0.6292% of the test_set correctly. (crit_fail:21, near_wrong:213)')
+  st.write('k=9: classifies 0.6260% of the test_set correctly. (crit_fail:22, near_wrong:214)')
+  st.write('k=10: classifies 0.6260% of the test_set correctly. (crit_fail:21, near_wrong:215)')
 
   k = int(df['n_neighbours'].values[0])
   nn,dist = give_nearest_n(proj_3d, slected_pesticide_idx)
