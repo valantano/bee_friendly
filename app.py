@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 import plotly.express as px
 import math
+import matplotlib.pyplot as plt
 
 from rdkit import Chem
 from rdkit.Chem import Draw
