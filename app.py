@@ -47,6 +47,8 @@ def give_nearest_n(proj_3d, point):
     return nearest_n[point,:], dist_matrix[point,1:]
 
 def classify_pesticide(contact_kill_risk_of_knn, distances):
+    distances = np.array(distances)
+    contact_kill_risk_of_knn = contact_kill_risk_of_knn[0]
     risk_dict = {'low': 1, 'medium': 2, 'high': 3}
     weights = (-distances+distances.sum())
     weights = weights/weights.sum()
