@@ -99,7 +99,7 @@ def plot_3d(proj_3d, bees, slected_pesticide_idx):
 
 
 def streamlit_stuff():
-
+  st.set_page_config(layout='wide')
   st.write("""
   # Bee-Friendly Pesticide K-NN Classifier
 
@@ -157,7 +157,7 @@ def streamlit_stuff():
   st.write(f"The Model predicts that its kill risk is: {classification_kill_risk}.")
 
   m = inchi.MolFromInchi(slected_pesticide_row['inchi'])
-  fig = Draw.MolToMPL(m, size=(100,100))
+  fig = Draw.MolToMPL(m)
   st.pyplot(fig)
   
   # Get K-Nearest-Neighbours out of Dataframe and print them
