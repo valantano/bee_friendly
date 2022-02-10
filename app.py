@@ -132,7 +132,6 @@ def streamlit_stuff():
 
   k = int(df['n_neighbours'].values[0])
   nn,dist = give_nearest_n(proj_3d, slected_pesticide_idx)
-  st.write(dist)
   
   # Filter out all neighbours which have no known kill risk entry.
   knn_list = []
@@ -149,13 +148,12 @@ def streamlit_stuff():
   
   df_nn = bees.iloc[nn]
   kill_risks = list(df_nn['honeybees_contact_kill_risk'].values)
-  st.write(kill_risks)
   classification_kill_risk = classify_pesticide(kill_risks, dist)
   
   slected_pesticide_row = bees.iloc[slected_pesticide_idx, :]
   st.header("Info about " + slected_pesticide_row['name'])
   st.write(f"This ones kill risk is currently {str(slected_pesticide_row['honeybees_contact_kill_risk'])}.")
-  st.write(f"The Model predicts that its kill risk is: {str(slected_pesticide_row['honeybees_contact_kill_risk'])}.")
+  st.write(f"The Model predicts that its kill risk is: {classification_kill_risk}.")
 
   m = inchi.MolFromInchi(slected_pesticide_row['inchi'])
   fig = Draw.MolToMPL(m)
