@@ -48,7 +48,6 @@ def give_nearest_n(proj_3d, point):
 
 def classify_pesticide(contact_kill_risk_of_knn, distances):
     distances = np.array(distances)
-    contact_kill_risk_of_knn = contact_kill_risk_of_knn[0]
     risk_dict = {'low': 1, 'medium': 2, 'high': 3}
     weights = (-distances+distances.sum())
     weights = weights/weights.sum()
@@ -149,7 +148,7 @@ def streamlit_stuff():
   dist = dist_list[0:k]
   
   df_nn = bees.iloc[nn]
-  kill_risks = df_nn['honeybees_contact_kill_risk'].values
+  kill_risks = list(df_nn['honeybees_contact_kill_risk'].values)
   st.write(kill_risks)
   classification_kill_risk = classify_pesticide(kill_risks, dist)
   
