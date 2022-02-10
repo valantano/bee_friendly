@@ -100,9 +100,9 @@ def plot_3d(proj_3d, bees, slected_pesticide_idx):
 def streamlit_stuff():
 
   st.write("""
-  # Bee-Friendly Pesticide "Classifier"
+  # Bee-Friendly Pesticide K-NN Classifier
 
-  This app lets you choose one pesticide from a collection of pesticides and predicts the risk of death for a bee if she encounters that specific pesticide.
+  This app lets you choose one pesticide from a collection of pesticides and predicts the risk of death for a bee if she would encounter that specific pesticide.
   We infer the risk by looking at the risk-rating of similar pesticides (from a chemical molecule structure perspective).
   """)
 
@@ -157,7 +157,7 @@ def streamlit_stuff():
 
   m = inchi.MolFromInchi(slected_pesticide_row['inchi'])
   fig = Draw.MolToMPL(m)
-  st.pyplot(fig)
+  st.pyplot(fig, height=400)
   
   # Get K-Nearest-Neighbours out of Dataframe and print them
   column_titles = ['name', 'honeybees_contact_kill_risk', 'honeybees_contact_kill_value_clean', 'url', 'inchi']
