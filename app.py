@@ -120,7 +120,7 @@ def streamlit_stuff():
 
   slected_pesticide = df['pesticide_selection'].values[0]
   slected_pesticide_idx = int(slected_pesticide.split("-")[0][:-1])
-  st.write(slected_pesticide, slected_pesticide_idx)
+#   st.write(slected_pesticide, slected_pesticide_idx)
 
 #   proj_2d = np.load("2317_proj_2d.npy")
 #   st.header("2D UMAP")
@@ -175,7 +175,7 @@ def streamlit_stuff():
   # Draw the molecular shapes of the KNNs
   for n in nn:
       # st.write(df_nn.loc[n])
-      st.subheader('Neighbour ' + df_nn.loc[n, 'name'] + ': ' + str(df_nn.loc[n, 'honeybees_contact_kill_risk']))
+      st.subheader('Neighbour ' + df_nn.loc[n, 'name'] + ': ' + f"`{str(df_nn.loc[n, 'honeybees_contact_kill_risk'])}`")
       nn_mol = inchi.MolFromInchi(df_nn.loc[n, 'inchi'])
       fig = Draw.MolToMPL(nn_mol)
       st.pyplot(fig)
