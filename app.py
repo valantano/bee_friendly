@@ -158,7 +158,7 @@ def streamlit_stuff():
 
   m = inchi.MolFromInchi(slected_pesticide_row['inchi'])
   fig = Draw.MolToMPL(m, size=(100,100))
-  st.pyplot(fig, use_container_width=True)
+  st.pyplot(fig, use_container_width=False)
   
   # Get K-Nearest-Neighbours out of Dataframe and print them
   column_titles = ['name', 'honeybees_contact_kill_risk', 'honeybees_contact_kill_value_clean', 'url', 'inchi']
