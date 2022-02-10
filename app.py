@@ -170,7 +170,7 @@ def streamlit_stuff():
       st.subheader('Neighbour ' + df_nn.loc[n, 'name'] + ': ' + str(df_nn.loc[n, 'honeybees_contact_kill_risk']))
       nn_mol = inchi.MolFromInchi(df_nn.loc[n, 'inchi'])
       fig = Draw.MolToMPL(nn_mol)
-      st.pyplot(fig)
+      st.pyplot(fig, width=200)
 
 
 
