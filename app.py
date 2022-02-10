@@ -99,12 +99,13 @@ def plot_3d(proj_3d, bees, slected_pesticide_idx):
 
 
 def streamlit_stuff():
-  st.set_page_config(layout='wide')
   st.write("""
   # Bee-Friendly Pesticide K-NN Classifier
 
-  This app lets you choose one pesticide from a collection of pesticides and predicts the risk of death for a bee if she would encounter that specific pesticide.
-  We infer the risk by looking at the risk-rating of similar pesticides (from a chemical molecule structure perspective).
+  On the left side you can choose one pesticide from a collection of pesticedes and the number of K-NearestNeighbours you want to compare it to.
+  The App then compares the molecular structure of all pesticides inside our collection and calculates the distance between each molecule pair (fingerprint from inchi).
+  Then the App uses UMAP for dimension reduction in order to plot the 3D Map which plots the molecules relative to each other. Molecules with small distances have a similar structure.
+  Below the 3D Plot you can see the Classification according to the KNN and you can also compare the KNN molecules with the chosen one.
   """)
 
   st.sidebar.header('User Input Parameters')
@@ -120,16 +121,16 @@ def streamlit_stuff():
   slected_pesticide_idx = int(slected_pesticide.split("-")[0][:-1])
   st.write(slected_pesticide, slected_pesticide_idx)
 
-  proj_2d = np.load("2317_proj_2d.npy")
-  st.header("2D UMAP")
-  st.plotly_chart(plot_2d(proj_2d, bees, slected_pesticide_idx))
+#   proj_2d = np.load("2317_proj_2d.npy")
+#   st.header("2D UMAP")
+#   st.plotly_chart(plot_2d(proj_2d, bees, slected_pesticide_idx))
 
   proj_3d = np.load("2317_proj_3d.npy")
   st.header("3D UMAP")
   st.plotly_chart(plot_3d(proj_3d, bees, slected_pesticide_idx))
 
   # K-NN
-  st.subheader('Nearest Neighbours')
+  st.header('Nearest Neighbours')
 
   k = int(df['n_neighbours'].values[0])
   nn,dist = give_nearest_n(proj_3d, slected_pesticide_idx)
@@ -152,17 +153,18 @@ def streamlit_stuff():
   classification_kill_risk = classify_pesticide(kill_risks, dist)
   
   slected_pesticide_row = bees.iloc[slected_pesticide_idx, :]
-  st.header("Info about " + slected_pesticide_row['name'])
-  st.write(f"This ones kill risk is currently {str(slected_pesticide_row['honeybees_contact_kill_risk'])}.")
-  st.write(f"The Model predicts that its kill risk is: {classification_kill_risk}.")
+  st.subheader("Info about " + slected_pesticide_row['name'])
+  st.write(f"This ones kill risk is currently {str(slected_pesticide_row['honeybees_contact_kill_risk'])} -> The Model predicts that its kill risk is: {classification_kill_risk}.")
+  st.write("Here you can see the structure of the molecule:")
 
   m = inchi.MolFromInchi(slected_pesticide_row['inchi'])
-  fig = Draw.MolToMPL(m, size=(100,100))
-  st.pyplot(fig, use_container_width=False)
+  fig = Draw.MolToMPL(m)
+  st.pyplot(fig)
   
   # Get K-Nearest-Neighbours out of Dataframe and print them
   column_titles = ['name', 'honeybees_contact_kill_risk', 'honeybees_contact_kill_value_clean', 'url', 'inchi']
   df_nn = df_nn.reindex(columns=column_titles)
+  st.subheader("Those are the K-Nearest Neighbours")
   st.write(df_nn)
   
   # Draw the molecular shapes of the KNNs
