@@ -99,12 +99,13 @@ def plot_3d(proj_3d, bees, slected_pesticide_idx):
 
 
 def streamlit_stuff():
+  st.set_page_config(page_title='Bee-Friendly', layout="centered")
   st.write("""
   # Bee-Friendly Pesticide K-NN Classifier
 
   On the left side you can choose one pesticide from a collection of pesticedes and the number of K-NearestNeighbours you want to compare it to.
   The App then compares the molecular structure of all pesticides inside our collection and calculates the distance between each molecule pair (fingerprint from inchi).
-  Then the App uses UMAP for dimension reduction in order to plot the 3D Map which plots the molecules relative to each other. Molecules with small distances have a similar structure.
+  Then the App uses UMAP for dimension reduction in order to plot the 3D Map which shows the molecules relative to each other. Molecules with small distances have a similar structure.
   Below the 3D Plot you can see the Classification according to the KNN and you can also compare the KNN molecules with the chosen one.
   """)
 
@@ -153,8 +154,8 @@ def streamlit_stuff():
   classification_kill_risk = classify_pesticide(kill_risks, dist)
   
   slected_pesticide_row = bees.iloc[slected_pesticide_idx, :]
-  st.subheader("Info about " + slected_pesticide_row['name'])
-  st.write(f"This ones kill risk is currently {str(slected_pesticide_row['honeybees_contact_kill_risk'])} -> The Model predicts that its kill risk is: {classification_kill_risk}.")
+  st.subheader("Info about the chosen pesticide" + slected_pesticide_row['name'])
+  st.write(f"This ones kill risk is currently {str(slected_pesticide_row['honeybees_contact_kill_risk'])} -> The Model predicts that its kill risk is: `{classification_kill_risk}`.")
   st.write("Here you can see the structure of the molecule:")
 
   m = inchi.MolFromInchi(slected_pesticide_row['inchi'])
