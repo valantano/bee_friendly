@@ -158,7 +158,7 @@ def streamlit_stuff():
 
   m = inchi.MolFromInchi(slected_pesticide_row['inchi'])
   fig = Draw.MolToMPL(m)
-  st.pyplot(fig)
+  st.pyplot(fig, use_container_width=False)
   
   # Get K-Nearest-Neighbours out of Dataframe and print them
   column_titles = ['name', 'honeybees_contact_kill_risk', 'honeybees_contact_kill_value_clean', 'url', 'inchi']
@@ -171,7 +171,6 @@ def streamlit_stuff():
       st.subheader('Neighbour ' + df_nn.loc[n, 'name'] + ': ' + str(df_nn.loc[n, 'honeybees_contact_kill_risk']))
       nn_mol = inchi.MolFromInchi(df_nn.loc[n, 'inchi'])
       fig = Draw.MolToMPL(nn_mol)
-      fig.update_layout(height=100)
       st.pyplot(fig)
 
 
