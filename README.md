@@ -7,6 +7,7 @@ The CropThon was presented by TechLabs Aachen, Bayer CropScience and the digital
 The CropThon's task was to identify and cluster existing pesticide product formulas / agriculture data using tools from the field of data science and subsequently pitch them as product or start-up ideas to Bayer CropScience. 
 
 ## About this Project
+Streamlit is having some problems lately. So it is possible that the App is not loading at the moment.
 This Application can be used over the following link: https://share.streamlit.io/valantano/bee_friendly/main/app.py
 
 ### Problem-Statement: 
