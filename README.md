@@ -1,5 +1,8 @@
 # bee-friendly Achieving 1st Place during the CropThon
 
+### Sidenote
+The KNN-Classifier could not be integrated into the Steamlit App during the Hackathon because of time issues. It was almost done and only a few lines were missing, but the time ran out. Because of that, I've added it after the presentation.
+
 ## Background Information
 This project was implemented during the CropThon/Ideathon/Hackathon on 13.11.2021-14.11.2021.
 The CropThon was presented by TechLabs Aachen, Bayer CropScience and the digitalHub Aachen.
